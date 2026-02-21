@@ -11,7 +11,7 @@ const AppLayout: React.FC = () => {
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       <Sidebar />
-      <main className={`flex-1 overflow-y-auto ${currentSong ? 'pb-36 md:pb-28' : 'pb-20 md:pb-0'}`}>
+      <main className={`flex-1 overflow-y-auto pt-14 md:pt-0 ${currentSong ? 'pb-28' : 'pb-0'}`}>
         <Outlet />
       </main>
       <MobileNav />
