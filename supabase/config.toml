@@ -1,0 +1,4 @@
+project_id = "zayvndizlfypiftctwys"
+
+[functions.search-music]
+verify_jwt = false
