@@ -12,7 +12,7 @@ const MobileNav: React.FC = () => {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-[72px] left-0 right-0 z-40 glass border-t border-border">
+    <nav className="md:hidden fixed top-0 left-0 right-0 z-40 glass border-b border-border">
       <div className="flex justify-around py-2">
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink
