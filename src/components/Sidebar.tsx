@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Library, Heart, Clock, LogOut, Music } from 'lucide-react';
+import { Home, Search, Library, Heart, Clock, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import orainoLogo from '@/assets/oraino-logo.png';
 
 const Sidebar: React.FC = () => {
   const { signOut } = useAuth();
@@ -23,9 +24,7 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="hidden md:flex flex-col w-60 bg-sidebar border-r border-sidebar-border h-full">
       <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center">
-          <Music className="w-5 h-5 text-primary-foreground" />
-        </div>
+        <img src={orainoLogo} alt="Oraino" className="w-10 h-10 rounded-xl object-contain" />
         <span className="text-lg font-bold text-foreground">Oraino</span>
       </div>
 
