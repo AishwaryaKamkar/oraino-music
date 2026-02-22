@@ -12,6 +12,7 @@ interface PlayerState {
   isShuffle: boolean;
   repeatMode: 'off' | 'one' | 'all';
   sleepTimer: number | null;
+  showAd: boolean;
 }
 
 interface PlayerContextType extends PlayerState {
@@ -24,6 +25,7 @@ interface PlayerContextType extends PlayerState {
   toggleShuffle: () => void;
   toggleRepeat: () => void;
   setSleepTimer: (minutes: number | null) => void;
+  dismissAd: () => void;
   audioRef: React.RefObject<HTMLAudioElement | null>;
 }
 
@@ -55,11 +57,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     isShuffle: false,
     repeatMode: 'off',
     sleepTimer: null,
+    showAd: false,
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sleepTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const youtubeIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const adTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const AD_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
 
   // Track recently played
   const trackPlay = useCallback(async (song: Song) => {
@@ -206,6 +212,31 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setState(prev => ({ ...prev, sleepTimer: minutes }));
   }, []);
 
+  const dismissAd = useCallback(() => {
+    setState(prev => ({ ...prev, showAd: false }));
+  }, []);
+
+  // Ad timer: show ad every 10 minutes of playback
+  useEffect(() => {
+    if (state.isPlaying && state.currentSong) {
+      adTimerRef.current = setInterval(() => {
+        if (audioRef.current) audioRef.current.pause();
+        setState(prev => ({ ...prev, showAd: true, isPlaying: false }));
+      }, AD_INTERVAL_MS);
+    } else {
+      if (adTimerRef.current) {
+        clearInterval(adTimerRef.current);
+        adTimerRef.current = null;
+      }
+    }
+    return () => {
+      if (adTimerRef.current) {
+        clearInterval(adTimerRef.current);
+        adTimerRef.current = null;
+      }
+    };
+  }, [state.isPlaying, state.currentSong]);
+
   // Audio time update
   useEffect(() => {
     const audio = audioRef.current;
@@ -239,6 +270,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         toggleShuffle,
         toggleRepeat,
         setSleepTimer,
+        dismissAd,
         audioRef,
       }}
     >

@@ -122,7 +122,7 @@ const Index: React.FC = () => {
           <div className="w-20 h-20 rounded-2xl bg-gradient-brand mx-auto mb-6 flex items-center justify-center">
             <Music className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h2 className="text-xl font-bold text-foreground mb-2">Welcome to SoundWave</h2>
+          <h2 className="text-xl font-bold text-foreground mb-2">Welcome to Oraino</h2>
           <p className="text-muted-foreground mb-6">Start by searching for your favorite music</p>
           <button
             onClick={() => navigate('/search')}
