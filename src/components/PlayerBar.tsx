@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { usePlayer } from '@/context/PlayerContext';
 import { X as CloseIcon } from 'lucide-react';
 import {
   Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Repeat1,
-  Volume2, VolumeX, Timer, ChevronUp, ChevronDown,
+  Volume2, VolumeX, Timer, ChevronUp,
 } from 'lucide-react';
+import FullScreenPlayer from './FullScreenPlayer';
 
 const formatTime = (s: number) => {
   if (!s || isNaN(s)) return '0:00';
@@ -22,6 +23,7 @@ const PlayerBar: React.FC = () => {
   } = usePlayer();
 
   const [expanded, setExpanded] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
   const [showSleepMenu, setShowSleepMenu] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -91,8 +93,11 @@ const PlayerBar: React.FC = () => {
       )}
 
       <div className="flex items-center justify-between px-4 py-2 gap-4">
-        {/* Song info */}
-        <div className="flex items-center gap-3 min-w-0 flex-1">
+        {/* Song info - tap to expand on mobile */}
+        <div
+          className="flex items-center gap-3 min-w-0 flex-1 cursor-pointer md:cursor-default"
+          onClick={() => setFullScreen(true)}
+        >
           <img
             src={currentSong.thumbnail || '/placeholder.svg'}
             alt={currentSong.title}
@@ -102,6 +107,7 @@ const PlayerBar: React.FC = () => {
             <p className="text-sm font-medium text-foreground truncate">{currentSong.title}</p>
             <p className="text-xs text-muted-foreground truncate">{currentSong.artist}</p>
           </div>
+          <ChevronUp className="w-4 h-4 text-muted-foreground md:hidden flex-shrink-0" />
         </div>
 
         {/* Controls */}
@@ -209,6 +215,8 @@ const PlayerBar: React.FC = () => {
         </div>
       </div>
     </div>
+
+    <FullScreenPlayer open={fullScreen} onClose={() => setFullScreen(false)} />
     </>
   );
 };

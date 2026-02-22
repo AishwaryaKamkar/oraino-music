@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Search, Library, Heart, Clock } from 'lucide-react';
+import orainoLogo from '@/assets/oraino-logo.png';
 
 const MobileNav: React.FC = () => {
   const links = [
@@ -13,7 +14,9 @@ const MobileNav: React.FC = () => {
 
   return (
     <nav className="md:hidden fixed top-0 left-0 right-0 z-40 glass border-b border-border">
-      <div className="flex justify-around py-2">
+      <div className="flex items-center justify-between px-3 py-1">
+        <img src={orainoLogo} alt="Oraino" className="w-8 h-8 rounded-lg object-contain" />
+        <div className="flex justify-around flex-1">
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
@@ -28,6 +31,7 @@ const MobileNav: React.FC = () => {
             {label}
           </NavLink>
         ))}
+        </div>
       </div>
     </nav>
   );
