@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { usePlayer } from '@/context/PlayerContext';
+import { X as CloseIcon } from 'lucide-react';
 import {
   Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Repeat1,
   Volume2, VolumeX, Timer, ChevronUp, ChevronDown,
@@ -15,9 +16,9 @@ const formatTime = (s: number) => {
 const PlayerBar: React.FC = () => {
   const {
     currentSong, isPlaying, currentTime, duration, volume,
-    isShuffle, repeatMode, sleepTimer,
+    isShuffle, repeatMode, sleepTimer, showAd,
     togglePlay, nextTrack, prevTrack, seek, setVolume,
-    toggleShuffle, toggleRepeat, setSleepTimer,
+    toggleShuffle, toggleRepeat, setSleepTimer, dismissAd,
   } = usePlayer();
 
   const [expanded, setExpanded] = useState(false);
@@ -37,6 +38,31 @@ const PlayerBar: React.FC = () => {
   const isYoutube = currentSong.source === 'youtube';
 
   return (
+    <>
+      {/* Ad overlay */}
+      {showAd && (
+        <div className="fixed inset-0 z-[60] bg-background/90 flex items-center justify-center">
+          <div className="bg-card border border-border rounded-2xl p-8 max-w-sm w-full mx-4 text-center relative">
+            <button
+              onClick={() => { dismissAd(); togglePlay(); }}
+              className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <CloseIcon className="w-5 h-5" />
+            </button>
+            <p className="text-xs text-muted-foreground mb-4 uppercase tracking-wider">Advertisement</p>
+            <div className="w-full h-40 rounded-xl bg-secondary border border-border flex items-center justify-center mb-4">
+              <span className="text-muted-foreground text-sm">Your Ad Here</span>
+            </div>
+            <button
+              onClick={() => { dismissAd(); togglePlay(); }}
+              className="px-6 py-2 bg-primary text-primary-foreground rounded-xl font-medium hover:opacity-90 transition-opacity"
+            >
+              Continue Listening
+            </button>
+          </div>
+        </div>
+      )}
+
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-player border-t border-border">
       {/* YouTube iframe (hidden, for audio playback) */}
       {isYoutube && isPlaying && (
@@ -183,6 +209,7 @@ const PlayerBar: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
         <div className="w-10 h-10 rounded-xl bg-gradient-brand flex items-center justify-center">
           <Music className="w-5 h-5 text-primary-foreground" />
         </div>
-        <span className="text-lg font-bold text-foreground">SoundWave</span>
+        <span className="text-lg font-bold text-foreground">Oraino</span>
       </div>
 
       <nav className="flex-1 px-3 space-y-1">

@@ -13,7 +13,7 @@ const SearchPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Song[]>([]);
   const [searching, setSearching] = useState(false);
-  const [source, setSource] = useState<'youtube' | 'jamendo'>('youtube');
+  const source = 'youtube'; // default source, toggle removed
   const [playlistSong, setPlaylistSong] = useState<Song | null>(null);
   const queryClient = useQueryClient();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -140,25 +140,6 @@ const SearchPage: React.FC = () => {
         )}
       </div>
 
-      {/* Source toggle */}
-      <div className="flex rounded-xl bg-secondary p-1 mb-6 max-w-xs">
-        <button
-          onClick={() => setSource('youtube')}
-          className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-            source === 'youtube' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
-          }`}
-        >
-          YouTube
-        </button>
-        <button
-          onClick={() => setSource('jamendo')}
-          className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-            source === 'jamendo' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
-          }`}
-        >
-          Jamendo
-        </button>
-      </div>
 
       {/* Recently played section */}
       {showRecent && (
