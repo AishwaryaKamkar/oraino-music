@@ -114,9 +114,14 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       currentTime: 0,
     }));
 
-    if (song.source === 'jamendo' && song.preview_url && audioRef.current) {
+    if (song.preview_url && audioRef.current) {
       audioRef.current.src = song.preview_url;
-      audioRef.current.play().catch(() => {});
+      const playPromise = audioRef.current.play();
+      if (playPromise) {
+        playPromise.catch((err) => {
+          console.warn('Autoplay blocked, user interaction needed:', err);
+        });
+      }
     }
 
     trackPlay(song);
@@ -124,7 +129,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const togglePlay = useCallback(() => {
     setState(prev => {
-      if (prev.currentSong?.source === 'jamendo' && audioRef.current) {
+      if (audioRef.current && audioRef.current.src) {
         if (prev.isPlaying) {
           audioRef.current.pause();
         } else {
@@ -274,7 +279,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         audioRef,
       }}
     >
-      <audio ref={audioRef} preload="auto" />
+      <audio ref={audioRef} preload="auto" playsInline />
       {children}
     </PlayerContext.Provider>
   );
