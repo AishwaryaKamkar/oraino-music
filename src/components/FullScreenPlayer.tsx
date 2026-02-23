@@ -41,7 +41,6 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
   const progress = duration ? (currentTime / duration) * 100 : 0;
   const isYoutube = currentSong.source === 'youtube';
 
-  // Find next track in queue
   const currentIdx = queue.findIndex(s => s.source_id === currentSong.source_id);
   const nextSong = currentIdx >= 0 && currentIdx < queue.length - 1 ? queue[currentIdx + 1] : null;
 
@@ -53,7 +52,8 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-          className="fixed inset-0 z-[70] bg-background flex flex-col overflow-hidden"
+          className="fixed inset-0 z-[70] flex flex-col overflow-hidden"
+          style={{ background: 'linear-gradient(180deg, hsl(220 25% 8%) 0%, hsl(220 20% 4%) 100%)' }}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 shrink-0">
@@ -65,17 +65,17 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
           </div>
 
           {/* Main content */}
-          <div className="flex-1 flex flex-col items-center justify-center px-6 gap-5 min-h-0 overflow-y-auto">
-            {/* Song title & artist above art */}
+          <div className="flex-1 flex flex-col items-center justify-center px-6 gap-6 min-h-0 overflow-y-auto">
+            {/* Song title & artist */}
             <div className="text-center w-full max-w-[320px]">
               <p className="text-xl font-bold text-primary truncate">{currentSong.title}</p>
               <p className="text-sm text-muted-foreground truncate mt-1">by {currentSong.artist}</p>
             </div>
 
-            {/* Album Art - static, no rotation */}
-            <div className="relative w-full max-w-[280px] aspect-video rounded-2xl overflow-hidden shadow-2xl">
+            {/* Album Art */}
+            <div className="relative w-full max-w-[300px] aspect-video rounded-2xl overflow-hidden shadow-2xl border border-border/30">
               <div
-                className="absolute inset-0 blur-3xl opacity-20 scale-150"
+                className="absolute inset-0 blur-3xl opacity-30 scale-150"
                 style={{
                   backgroundImage: `url(${currentSong.thumbnail || ''})`,
                   backgroundSize: 'cover',
@@ -89,7 +89,7 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
                   className="relative w-full h-full object-cover"
                 />
               ) : (
-                <div className="relative w-full h-full bg-card border border-border flex items-center justify-center">
+                <div className="relative w-full h-full bg-card flex items-center justify-center">
                   <Music className="w-16 h-16 text-muted-foreground" />
                 </div>
               )}
@@ -104,10 +104,13 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
                   className="w-full h-1.5 bg-secondary rounded-full cursor-pointer group relative"
                 >
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-accent rounded-full relative transition-all"
-                    style={{ width: `${progress}%` }}
+                    className="h-full rounded-full relative transition-all"
+                    style={{
+                      width: `${progress}%`,
+                      background: 'linear-gradient(90deg, hsl(var(--primary)), hsl(280 60% 55%))',
+                    }}
                   >
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-2 border-background shadow-lg" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-2 border-background shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
                 <div className="flex justify-between">
@@ -117,28 +120,29 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
               </div>
             )}
 
-            {/* Controls */}
-            <div className="flex items-center justify-center gap-5 w-full max-w-[320px]">
+            {/* Controls - Spotify style */}
+            <div className="flex items-center justify-between w-full max-w-[320px]">
               <button
                 onClick={toggleShuffle}
                 className={`p-2 transition-colors ${isShuffle ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}
               >
-                <ThumbsUp className="w-5 h-5" />
+                <Shuffle className="w-5 h-5" />
               </button>
 
               <button onClick={prevTrack} className="p-2 text-foreground hover:text-primary transition-colors">
-                <SkipBack className="w-6 h-6" />
+                <SkipBack className="w-6 h-6" fill="currentColor" />
               </button>
 
               <button
                 onClick={togglePlay}
-                className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:opacity-90 transition-opacity shadow-lg shadow-primary/30"
+                className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:scale-105 transition-transform shadow-lg"
+                style={{ boxShadow: '0 0 24px hsl(var(--primary) / 0.4)' }}
               >
-                {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
+                {isPlaying ? <Pause className="w-6 h-6" fill="currentColor" /> : <Play className="w-6 h-6 ml-0.5" fill="currentColor" />}
               </button>
 
               <button onClick={nextTrack} className="p-2 text-foreground hover:text-primary transition-colors">
-                <SkipForward className="w-6 h-6" />
+                <SkipForward className="w-6 h-6" fill="currentColor" />
               </button>
 
               <button
@@ -149,17 +153,27 @@ const FullScreenPlayer: React.FC<Props> = ({ open, onClose }) => {
               </button>
             </div>
 
+            {/* Secondary actions row */}
+            <div className="flex items-center justify-center gap-8 w-full max-w-[320px]">
+              <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                <Heart className="w-5 h-5" />
+              </button>
+              <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                <ListMusic className="w-5 h-5" />
+              </button>
+            </div>
+
             {/* Up Next & Playlist info */}
-            <div className="w-full max-w-[320px] flex gap-3 mt-2">
+            <div className="w-full max-w-[320px] flex gap-3">
               {nextSong && (
-                <div className="flex-1 bg-card/50 border border-border rounded-xl p-3">
+                <div className="flex-1 bg-card/40 border border-border/50 rounded-xl p-3">
                   <p className="text-[10px] text-primary uppercase tracking-wider mb-1">Up Next</p>
                   <p className="text-sm font-medium text-foreground truncate">{nextSong.title}</p>
                   <p className="text-xs text-muted-foreground truncate">{nextSong.artist}</p>
                 </div>
               )}
               {queue.length > 0 && (
-                <div className="flex-1 bg-card/50 border border-border rounded-xl p-3">
+                <div className="flex-1 bg-card/40 border border-border/50 rounded-xl p-3">
                   <p className="text-[10px] text-primary uppercase tracking-wider mb-1">Playlist</p>
                   <p className="text-sm font-medium text-foreground truncate">{currentSong.album || 'Queue'}</p>
                   <p className="text-xs text-muted-foreground">{queue.length} Songs</p>
