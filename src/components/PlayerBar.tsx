@@ -66,12 +66,13 @@ const PlayerBar: React.FC = () => {
       )}
 
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-player border-t border-border">
-      {/* YouTube iframe (hidden, for audio playback) */}
-      {isYoutube && isPlaying && (
+      {/* YouTube iframe (hidden, for audio playback) - keep mounted to avoid mobile autoplay issues */}
+      {isYoutube && currentSong && (
         <iframe
           className="fixed top-0 left-0 w-1 h-1 opacity-0 pointer-events-none"
-          src={`https://www.youtube.com/embed/${currentSong.source_id}?autoplay=1&enablejsapi=1`}
-          allow="autoplay"
+          src={isPlaying ? `https://www.youtube.com/embed/${currentSong.source_id}?autoplay=1&enablejsapi=1&playsinline=1` : ''}
+          allow="autoplay; encrypted-media"
+          allowFullScreen={false}
           title="YouTube player"
         />
       )}
