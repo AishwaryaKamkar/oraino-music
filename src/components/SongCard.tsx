@@ -52,8 +52,6 @@ const SongCard: React.FC<SongCardProps> = ({ song, queue, isFavorite, onToggleFa
         </p>
         <p className="text-xs text-muted-foreground truncate">
           {song.artist}
-          {song.source === 'youtube' && ' • YouTube'}
-          {song.source === 'jamendo' && ' • Jamendo'}
         </p>
       </div>
 
