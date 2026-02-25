@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Library, Heart, Clock, LogOut } from 'lucide-react';
+import { Home, Search, Library, Heart, Clock, LogOut, Compass, BookOpen } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import ThemeToggle from '@/components/ThemeToggle';
 import orainoLogo from '@/assets/oraino-logo.png';
 
 const Sidebar: React.FC = () => {
@@ -11,9 +12,11 @@ const Sidebar: React.FC = () => {
   const links = [
     { to: '/', icon: Home, label: 'Home' },
     { to: '/search', icon: Search, label: 'Search' },
+    { to: '/discover', icon: Compass, label: 'Discover' },
     { to: '/library', icon: Library, label: 'Library' },
     { to: '/favorites', icon: Heart, label: 'Favorites' },
     { to: '/history', icon: Clock, label: 'History' },
+    { to: '/blog', icon: BookOpen, label: 'Blog' },
   ];
 
   const handleSignOut = async () => {
@@ -26,6 +29,9 @@ const Sidebar: React.FC = () => {
       <div className="p-6 flex items-center gap-3">
         <img src={orainoLogo} alt="Oraino" className="w-10 h-10 rounded-xl object-contain" />
         <span className="text-lg font-bold text-foreground">Oraino</span>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </div>
 
       <nav className="flex-1 px-3 space-y-1">

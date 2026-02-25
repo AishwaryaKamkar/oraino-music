@@ -1,15 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Library, Heart, Clock } from 'lucide-react';
+import { Home, Search, Library, Heart, Compass } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 import orainoLogo from '@/assets/oraino-logo.png';
 
 const MobileNav: React.FC = () => {
   const links = [
     { to: '/', icon: Home, label: 'Home' },
     { to: '/search', icon: Search, label: 'Search' },
+    { to: '/discover', icon: Compass, label: 'Discover' },
     { to: '/library', icon: Library, label: 'Library' },
     { to: '/favorites', icon: Heart, label: 'Likes' },
-    { to: '/history', icon: Clock, label: 'History' },
   ];
 
   return (
@@ -32,6 +33,7 @@ const MobileNav: React.FC = () => {
           </NavLink>
         ))}
         </div>
+        <ThemeToggle />
       </div>
     </nav>
   );

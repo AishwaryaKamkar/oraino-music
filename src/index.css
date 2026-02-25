@@ -61,6 +61,54 @@
   .dark {
     /* Same as root - dark by default */
   }
+
+  [data-theme="light"] {
+    --background: 210 20% 96%;
+    --foreground: 228 35% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 228 35% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 35% 11%;
+
+    --primary: 207 62% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 92%;
+    --secondary-foreground: 228 35% 20%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 245 6% 45%;
+
+    --accent: 207 50% 90%;
+    --accent-foreground: 228 35% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 207 62% 45%;
+
+    --sidebar-background: 210 20% 98%;
+    --sidebar-foreground: 228 35% 30%;
+    --sidebar-primary: 207 62% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 92%;
+    --sidebar-accent-foreground: 228 35% 20%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 207 62% 45%;
+
+    --player-background: 0 0% 100%;
+    --player-foreground: 228 35% 11%;
+    --player-progress: 207 62% 45%;
+    --player-hover: 207 62% 55%;
+
+    --gradient-brand: linear-gradient(135deg, hsl(207 62% 45%), hsl(207 50% 70%));
+    --shadow-glow: 0 0 24px hsl(207 62% 45% / 0.15);
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.08);
+  }
 }
 
 @layer base {
